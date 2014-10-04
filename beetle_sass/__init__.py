@@ -1,10 +1,21 @@
+from os import sep as path_separator
+
 import sass
 
 
-def render_sass(raw_content):
-    return sass.compile(string=raw_content)
+class SassRenderer(object):
+    def __init__(self, include_path):
+        self.include_path = include_path
+        if not include_path.endswith(path_separator):
+            self.include_path += path_separator
+
+    def render(self, source):
+        # Chop of the include path and replace the file extension
+        destination = source[len(self.include_path):-4] + 'css'
+        return destination, sass.compile(filename=source).encode('UTF-8')
 
 
 def register(context, plugin_config):
     sass_extensions = ['sass', 'scss']
-    context.content_renderer.add_renderer(sass_extensions, render_sass)
+    sass_renderer = SassRenderer(context.config.folders['include'])
+    context.includer.add(sass_extensions, sass_renderer.render)
