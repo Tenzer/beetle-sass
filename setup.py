@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='Beetle-Sass',
-    version='1.0.0',
+    version='1.1.0',
     author='Jeppe Toustrup',
     author_email='jeppe@tenzer.dk',
     description='Enables Beetle to handle Sass files',
